@@ -7,33 +7,14 @@ gameDisplay = pygame.display.set_mode((582,785))
 clock = pygame.time.Clock()
 
 #all spaces, 0=empty 1=filled 2=active
-rows=[
-[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],  #in tuple: first is piece type, second is color
-[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
-[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
-[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
-[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
-[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
-[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
-[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
-[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
-[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
-[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
-[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
-[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
-[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
-[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
-[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
-[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
-[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]]
-]
-"""
+#in tuple: first is piece type, second is color
+rows = []
 for i in range(18):
     rows.append([])
     for w in range(10):
         rows[i].append([0,0])
-    print rows[i]
-"""
+
+
 def place(x,y, color):
     colors=["tiles/color1.jpg","tiles/color2.jpg","tiles/color3.jpg","tiles/color4.jpg","tiles/color5.jpg","tiles/color6.jpg","tiles/color7.jpg"]
     piece = pygame.image.load(colors[color])
@@ -196,7 +177,7 @@ def playAgain(score,highscore):
     updateHighscore(highscore)
     gameDisplay.blit(pygame.image.load('images/playAgainButton.png'),(231,360))
     pygame.display.update()
-    open("files/highscore.txt","w").write(str(highscore))
+    open("highscore.txt","w").write(str(highscore))
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -207,7 +188,8 @@ def playAgain(score,highscore):
                 pygame.quit()
                 
 def resetGame():
-    saveNum=0
+    global saveNum, pieceRotation
+    saveNum = 0
     pieceRotation=0
     count1=count2=0
     for row in rows:    #clear board
@@ -323,15 +305,15 @@ def game_loop():
         gameDisplay.blit(pygame.image.load('images/background4.jpg'),(0,0))
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                     if canMoveToSide(1):
                         updateBackgroundBoard(3)
-                if event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     if canMoveToSide(2):
                         updateBackgroundBoard(4)
-                if event.key == pygame.K_UP:
+                if event.key == pygame.K_UP or event.key == pygame.K_w:
                     rotatePiece()
-                if event.key == pygame.K_DOWN:  #ablitliy to hold down, left, or right
+                if event.key == pygame.K_DOWN or event.key == pygame.K_s:  #ablitliy to hold down, left, or right
                     if canMoveDown():
                         updateBackgroundBoard(2)
                 if event.key == pygame.K_SPACE:
@@ -387,7 +369,6 @@ def startScreen():
 def gameLooper():
     while 1:
         game_loop()
-    gameLooper()
 
 splashScreen()
 startScreen()
