@@ -1,4 +1,4 @@
-# Tetris-Python
+# Tetris
 2D Tetris Game written in Python using PyGame
 
 Run Tetris.py to play with the PyGame package installed (Python 3.6)
