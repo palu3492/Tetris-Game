@@ -375,7 +375,7 @@ def startScreen():
             if event.type == pygame.QUIT:   #quit key.
                 gameRunning = False
                 return pygame.quit()
-        pygame.display.update()
+        pygame.display.update()9
         clock.tick(30)
 
 def gameLooper():
