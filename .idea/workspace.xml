@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7554d9e2-ade4-4690-a29e-fa5f89ac6ddb" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tetris.py" beforeDir="false" afterPath="$PROJECT_DIR$/tetris.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -119,8 +118,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tetris.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="481">
-              <caret line="377" column="32" selection-start-line="377" selection-start-column="32" selection-end-line="377" selection-end-column="32" />
+            <state relative-caret-position="456">
+              <caret line="377" column="31" selection-start-line="377" selection-start-column="31" selection-end-line="377" selection-end-column="31" />
               <folding>
                 <element signature="e#14#25#0" expanded="true" />
               </folding>
@@ -297,8 +296,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/tetris.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="481">
-          <caret line="377" column="32" selection-start-line="377" selection-start-column="32" selection-end-line="377" selection-end-column="32" />
+        <state relative-caret-position="456">
+          <caret line="377" column="31" selection-start-line="377" selection-start-column="31" selection-end-line="377" selection-end-column="31" />
           <folding>
             <element signature="e#14#25#0" expanded="true" />
           </folding>
