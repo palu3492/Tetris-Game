@@ -1,4 +1,4 @@
-#Designed by Alex Palumbo
+#Alex Palumbo
 import time
 import pygame
 import random
@@ -8,6 +8,7 @@ clock = pygame.time.Clock()
 
 #all spaces, 0=empty 1=filled 2=active
 #in tuple: first is piece type, second is color
+#rows should be a dictionary
 rows = []
 for i in range(18):
     rows.append([])
@@ -293,8 +294,9 @@ def updateHighscore(highscore):
     rect.center = (510, 465)
     gameDisplay.blit(block, rect)
 
+gameRunning = True
 def game_loop():
-    global board
+    global board, gameRunning
     gameExit = False
     yCount=0
     lines=0
@@ -302,57 +304,67 @@ def game_loop():
     highscore = int(open("highscore.txt","r").read())
     spawnNewPiece(score,highscore)
     while not gameExit:
-        gameDisplay.blit(pygame.image.load('images/background4.jpg'),(0,0))
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                    if canMoveToSide(1):
-                        updateBackgroundBoard(3)
-                if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                    if canMoveToSide(2):
-                        updateBackgroundBoard(4)
-                if event.key == pygame.K_UP or event.key == pygame.K_w:
-                    rotatePiece()
-                if event.key == pygame.K_DOWN or event.key == pygame.K_s:  #ablitliy to hold down, left, or right
-                    if canMoveDown():
-                        updateBackgroundBoard(2)
-                if event.key == pygame.K_SPACE:
-                    while canMoveDown():
-                        updateBackgroundBoard(2)
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                
-        if yCount==7:
-            if canMoveDown():
-                updateBackgroundBoard(2)
-            else:
-                updateBackgroundBoard(1)
-                lineWin = checkLineWin()
-                if type(lineWin)!=None:
-                    lines+=lineWin[0]
-                    score+=lineWin[1]
-                    if score>highscore:
-                        highscore=score
-                if spawnNewPiece(score,highscore)==1:
-                    return
-            yCount=0
-        yCount+=1
-        updateScore(lines, score)
-        updateHighscore(highscore)
-        updateVisualBoard()
-        pygame.display.update()
-        clock.tick(30)
+        if gameRunning:
+            gameDisplay.blit(pygame.image.load('images/background4.jpg'),(0,0))
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_LEFT or event.key == pygame.K_a:
+                        if canMoveToSide(1):
+                            updateBackgroundBoard(3)
+                    if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
+                        if canMoveToSide(2):
+                            updateBackgroundBoard(4)
+                    if event.key == pygame.K_UP or event.key == pygame.K_w:
+                        rotatePiece()
+                    if event.key == pygame.K_DOWN or event.key == pygame.K_s:  #ablitliy to hold down, left, or right
+                        if canMoveDown():
+                            updateBackgroundBoard(2)
+                    if event.key == pygame.K_SPACE:
+                        while canMoveDown():
+                            updateBackgroundBoard(2)
+                if event.type == pygame.QUIT:
+                    gameExit = True
+                    gameRunning = False
+                    return pygame.quit()
+
+            if yCount==7:
+                if canMoveDown():
+                    updateBackgroundBoard(2)
+                else:
+                    updateBackgroundBoard(1)
+                    lineWin = checkLineWin()
+                    if type(lineWin)!=None:
+                        lines+=lineWin[0]
+                        score+=lineWin[1]
+                        if score>highscore:
+                            highscore=score
+                    if spawnNewPiece(score,highscore)==1:
+                        return
+                yCount=0
+            yCount+=1
+            updateScore(lines, score)
+            updateHighscore(highscore)
+            updateVisualBoard()
+            pygame.display.update()
+            clock.tick(30)
         
 def splashScreen():
+    global gameRunning
     timer=0
     while 1:
         gameDisplay.blit(pygame.image.load('images/splash.jpg'),(0,0))
         timer+=1
         if timer>60:
             return
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                gameRunning = False
+                return pygame.quit()
         pygame.display.update()
+        clock.tick(30)
 
 def startScreen():
+    global gameRunning
     while 1:
         gameDisplay.blit(pygame.image.load('images/background4.jpg'),(0,0))
         gameDisplay.blit(pygame.image.load('images/startButton.png'),(231,360))
@@ -360,21 +372,23 @@ def startScreen():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     return
-                if event.type == pygame.QUIT:   #quit key
-                    pygame.quit()
-                    
+            if event.type == pygame.QUIT:   #quit key.
+                gameRunning = False
+                return pygame.quit()
         pygame.display.update()
         clock.tick(30)
 
 def gameLooper():
+    global gameRunning
     while 1:
         game_loop()
+        if not gameRunning:
+            return
 
 splashScreen()
-startScreen()
-gameLooper()
-    
-pygame.quit()
-
-#lose
-#calculate score vs lines
+if gameRunning:
+    startScreen()
+if gameRunning:
+    gameLooper()
+if gameRunning:
+    pygame.quit()
